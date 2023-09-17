@@ -1,0 +1,47 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  config:
+    import: env.yml
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/users/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/users/reissue
+            - Method=GET
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/users/**
+            - Method=POST
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/users/**
+          filters:
+            - AuthorizationHeaderFilter
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/friends/**
+        - id: timeCapsule-service
+          uri: ${TIMECAPSULE_SERVICE_URI}
+          predicates:
+            - Path=/time-capsules/**
+          filters:
+            - AuthorizationHeaderFilter
+
+token:
+  secret: ${TOKEN_SECRET}
