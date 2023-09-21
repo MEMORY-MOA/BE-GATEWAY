@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT}
+  port: 8000
 spring:
   config:
     import: env.yml
