@@ -1,8 +1,6 @@
 server:
   port: 8000
 spring:
-  config:
-    import: env.yml
   application:
     name: apigateway
   cloud:

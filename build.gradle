@@ -2,6 +2,18 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.5'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.google.cloud.tools.jib' version '3.3.2'
+}
+
+jib {
+    from {
+        image = "openjdk:17-alpine"
+    }
+    to {
+        image = "193650671288.dkr.ecr.ap-southeast-2.amazonaws.com/moa-apigateway:latest"
+    }
+    container {
+    }
 }
 
 group = 'com.moa'
