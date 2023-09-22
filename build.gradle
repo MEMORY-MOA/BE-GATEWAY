@@ -10,7 +10,6 @@ jib {
         image = "openjdk:17-alpine"
     }
     to {
-        image = "193650671288.dkr.ecr.ap-southeast-2.amazonaws.com/moa-apigateway:latest"
     }
     container {
     }
