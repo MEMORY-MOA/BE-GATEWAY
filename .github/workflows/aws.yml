@@ -7,7 +7,7 @@ on:
     branches: [ "deploy" ]
 
 env:
-  AWS_REGION: ap-southeast-2                  # set this to your preferred AWS region, e.g.  us-west-1
+  AWS_REGION: ap-southeast-2                  # set this to your preferred AWS region, e.g. us-west-1
   ECR_REGISTRY: 193650671288.dkr.ecr.ap-southeast-2.amazonaws.com
   ECR_REPOSITORY: moa-apigateway             # set this to your Amazon ECR repository name
   IMAGE_TAG: latest                
