@@ -48,6 +48,8 @@ spring:
           uri: ${MEMBER_SERVICE_URI}
           predicates:
             - Path=/friends/**
+          filters:
+            - AuthorizationHeaderFilter
         - id: timeCapsule-service
           uri: ${TIMECAPSULE_SERVICE_URI}
           predicates:
