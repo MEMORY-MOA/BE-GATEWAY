@@ -1,20 +1,10 @@
 server:
   port: 8000
-  ssl:
-    enabled: true
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-store: ${KEY_STORE_CLASSPATH}
-    key-store-type: ${KEY_STORE_TYPE}
 spring:
   application:
     name: moa-apigateway
   cloud:
     gateway:
-      httpclient:
-        ssl:
-          handshake-timeout-millis: 10000
-          close-notify-flush-timeout-millis: 3000
-          close-notify-read-timeout-millis: 0
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
