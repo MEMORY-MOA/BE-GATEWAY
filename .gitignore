@@ -38,3 +38,10 @@ out/
 
 ### 설정파일 ###
 src/main/resources/env.yml
+
+### SSL ###
+keystore.p12
+chain.pem
+cert.pem
+privkey.pem
+cert_and_key.p12
