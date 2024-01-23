@@ -62,6 +62,12 @@ spring:
             - Path=/time-capsules/**
           filters:
             - AuthorizationHeaderFilter
+        - id: timeCapsule-service
+          uri: ${TIMECAPSULE_SERVICE_URI}
+          predicates:
+            - Path=/time-capsules-content/**
+          filters:
+            - AuthorizationHeaderFilter
 
 token:
   secret: ${TOKEN_SECRET}

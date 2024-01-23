@@ -45,6 +45,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 				String subject = extractMemberIdFromJwt(jwt);
 				request = exchange.getRequest().mutate()
 					.header("member", subject)
+					.header("memberId", subject)
+					.header("member-id", subject)
 					.build();
 			}
 			return chain.filter(exchange.mutate().request(request).build());
