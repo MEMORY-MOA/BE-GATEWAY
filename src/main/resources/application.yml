@@ -1,10 +1,8 @@
 server:
   port: 8000
 spring:
-  config:
-    import: env.yml
   application:
-    name: apigateway
+    name: moa-apigateway
   cloud:
     gateway:
       default-filters:
@@ -41,6 +39,13 @@ spring:
           predicates:
             - Path=/users/reissue
             - Method=GET
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
+            - Path=/users/password
+            - Method=POST
+          filters:
+            - AuthorizationHeaderFilter
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
