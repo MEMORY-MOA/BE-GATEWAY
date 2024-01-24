@@ -42,6 +42,13 @@ spring:
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
+            - Path=/users/password
+            - Method=POST
+          filters:
+            - AuthorizationHeaderFilter
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
             - Path=/users/**
             - Method=POST
         - id: member-service
