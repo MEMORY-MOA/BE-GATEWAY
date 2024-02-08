@@ -1,8 +1,19 @@
 server:
   port: 8000
 spring:
+  config:
+    import: env.yml
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      pool:
+        max-idle: ${REDIS_POOL_MAX_IDLE}
+        min-idle: ${REDIS_POOL_MIN_IDLE}
+        max-active: ${REDIS_POOL_MAX_ACTIVE}
+        max-wait: ${REDIS_POOL_MAX_WAIT}
   application:
-    name: moa-apigateway
+    name: apigateway
   cloud:
     gateway:
       default-filters:
@@ -37,13 +48,20 @@ spring:
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
+            - Path=/users/logout
+            - Method=POST
+          filters:
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
             - Path=/users/reissue
             - Method=GET
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
             - Path=/users/password
-            - Method=POST
           filters:
             - AuthorizationHeaderFilter
         - id: member-service
