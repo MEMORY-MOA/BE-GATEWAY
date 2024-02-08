@@ -3,6 +3,7 @@ package com.moa.apigateway.filter;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -10,7 +11,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.moa.apigateway.util.RedisUtil;
+
 import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -18,10 +22,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.config> {
 	Environment env;
+	RedisUtil redisUtil; //= new RedisUtil(new StringRedisTemplate());
 
-	public AuthorizationHeaderFilter (Environment env) {
+	public AuthorizationHeaderFilter (Environment env, RedisUtil redisUtil) {
 		super(config.class);
 		this.env = env;
+		this.redisUtil = redisUtil;
 	}
 
 	public static class config {
@@ -39,9 +45,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 			String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
 			String jwt = authorizationHeader.replace("Bearer", "");
 
+			String isLoginUser = redisUtil.getData(jwt);
+
+			System.out.println("\n" + jwt + "\n");
 			if (!isJwtValid(jwt)) {
-				return onError(exchange, "JWT token이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
-			}else {
+				return onError(exchange, "JWT Token이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
+			} else if (isLoginUser != null && isLoginUser.equals("false")) {
+				return onError(exchange, "JWT Token이 유효하지 않습니다.", HttpStatus.FORBIDDEN);
+			} else {
 				String subject = extractMemberIdFromJwt(jwt);
 				request = exchange.getRequest().mutate()
 					.header("member", subject)
