@@ -84,6 +84,11 @@ spring:
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
+            - Path=/users/change-password/id
+            - Method=PATCH
+        - id: member-service
+          uri: ${MEMBER_SERVICE_URI}
+          predicates:
             - Path=/users/**
           filters:
             - AuthorizationHeaderFilter
