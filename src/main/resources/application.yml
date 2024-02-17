@@ -71,7 +71,7 @@ spring:
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
           predicates:
-            - Path=/users/send-email
+            - Path=/users/send-email/**
             - Method=POST
         - id: member-service
           uri: ${MEMBER_SERVICE_URI}
